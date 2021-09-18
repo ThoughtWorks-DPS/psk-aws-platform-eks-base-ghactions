@@ -1,0 +1,32 @@
+name: 'runner and environment setup for lab-platform-eks-ghactions pipeline'
+inputs:
+  working-directory:
+    description: set working directory; default is .
+    required: false
+    default: '.'
+  secrethub-creds:
+    description: pass in secrethub creds
+    required: true
+  terraform-env:
+    description: tfvars workspace parameters to use
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+      - name: setup runner
+        uses: ThoughtWorks-DPS/lab-runner-setup-action@main
+        with:
+          install-secrethub: "true"
+      - name: fetch secure env values
+        uses: secrethub/actions/env-export@v0.2.1
+        env:
+          SECRETHUB_CREDENTIAL: ${{ inputs.secrethub-creds }}
+          TERRAFORM_CLOUD_TOKEN: secrethub://twdps/di/svc/terraform-cloud/team-api-token
+          AWS_ACCESS_KEY_ID: secrethub://twdps/di/svc/aws/dps-2/DPSSimpleServiceAccount/aws-access-key-id
+          AWS_SECRET_ACCESS_KEY: secrethub://twdps/di/svc/aws/dps-2/DPSSimpleServiceAccount/aws-secret-access-key
+      - name: set environment tfvars
+        shell: bash
+        env:
+          SECRETHUB_CREDENTIAL: ${{ inputs.secrethub-creds }}
+        run: secrethub inject -i environments/${{ inputs.terraform-env}}.auto.tfvars.json.tpl -o ${{ inputs.terraform-env}}.auto.tfvars.json
