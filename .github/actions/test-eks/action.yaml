@@ -16,6 +16,7 @@ runs:
       with:
         install-awspec: "true"
     - name: run awspec tests
+      shell: bash
       env:
         TEST_ENV: ${{ inputs. tfvars-env }}
       run: bash scripts/cluster_configuration_tests.sh ${{ inputs. tfvars-env }}
