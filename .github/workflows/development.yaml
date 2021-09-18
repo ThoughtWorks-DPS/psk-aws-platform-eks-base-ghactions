@@ -6,9 +6,31 @@ on:
       - "!*"
 
 jobs:
-  gha-sandbox-plan:
+  validate-terraform:
+    name: validate terraform
     runs-on: ubuntu-latest
-    name: gha-sandbox terraform plan 
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: setup pipeline runner and environment variables
+        uses: ./.github/actions/setup-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: run tflint, terraform validate, and terraform fmt checks
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-sandbox
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          lint: true
+          fmt-check-terraform: true
+          validate-terraform: true
+
+  gha-sandbox-change-plan:
+    name: gha-sandbox plan changes
+    needs: validate-terraform
+    runs-on: ubuntu-latest
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -23,23 +45,19 @@ jobs:
           TF_WORKSPACE: gha-sandbox
         with:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-          lint: true
-          init: true
-          fmt-check-terraform: true
-          validate-terraform: true
           plan: true
 
-  gha-sandbox-apply:
+  gha-sandbox-apply-changes:
+    name: gha-sandbox apply changes
+    needs: gha-sandbox-change-plan
     runs-on: ubuntu-latest
-    name: gha-sandbox terraform apply 
     environment:
       name: gha-sandbox
-    needs: gha-sandbox-plan
     steps:
       - name: checkout code
         uses: actions/checkout@v2
       - name: hello
-        run: echo "hello"
+        run: echo "will run tf apply here"
       # - name: setup pipeline runner and environment
       #   uses: ./.github/actions/setup-pipeline-env
       #   with:
@@ -51,5 +69,26 @@ jobs:
       #     TF_WORKSPACE: gha-sandbox
       #   with:
       #     terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-      #     init: true
+      #     plan: true
+
+  gha-sandbox-test-eks-changes:
+    name: gha-sandbox test changes
+    needs: gha-sandbox-apply-changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: hello
+        run: echo "will run spec tests action here"
+      # - name: setup pipeline runner and environment
+      #   uses: ./.github/actions/setup-pipeline-env
+      #   with:
+      #     terraform-env: gha-sandbox
+      #     secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+      # - name: terraform plan for gha-sandbox environment
+      #   uses: ThoughtWorks-DPS/terraform-action@main
+      #   env:
+      #     TF_WORKSPACE: gha-sandbox
+      #   with:
+      #     terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
       #     plan: true

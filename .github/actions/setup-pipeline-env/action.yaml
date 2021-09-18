@@ -7,7 +7,7 @@ inputs:
   secrethub-creds:
     description: pass in secrethub creds
     required: true
-  terraform-env:
+  tfvar-env:
     description: tfvars workspace parameters to use
     required: true
 
@@ -29,4 +29,4 @@ runs:
         shell: bash
         env:
           SECRETHUB_CREDENTIAL: ${{ inputs.secrethub-creds }}
-        run: secrethub inject -i environments/${{ inputs.terraform-env}}.auto.tfvars.json.tpl -o ${{ inputs.terraform-env}}.auto.tfvars.json
+        run: secrethub inject -i environments/${{ inputs.tfvar-env}}.auto.tfvars.json.tpl -o ${{ inputs.tfvar-env}}.auto.tfvars.json
