@@ -29,7 +29,6 @@ jobs:
 
   gha-sandbox-change-plan:
     name: gha-sandbox plan changes
-    needs: validate-terraform
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -37,8 +36,8 @@ jobs:
       - name: setup pipeline runner and environment
         uses: ./.github/actions/setup-pipeline-env
         with:
-          terraform-env: gha-sandbox
           secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
       - name: terraform plan for gha-sandbox environment
         uses: ThoughtWorks-DPS/terraform-action@main
         env:
@@ -49,7 +48,7 @@ jobs:
 
   gha-sandbox-apply-changes:
     name: gha-sandbox apply changes
-    needs: gha-sandbox-change-plan
+    needs: [ validate-terraform, gha-sandbox-change-plan ]
     runs-on: ubuntu-latest
     environment:
       name: gha-sandbox
