@@ -46,6 +46,8 @@ jobs:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
           plan: true
 
+  # github repository configuration has gha-sandbox environment defined
+  # and requires team member approval to perform this job
   gha-sandbox-apply-changes:
     name: gha-sandbox apply changes
     needs: [ validate-terraform, gha-sandbox-change-plan ]
@@ -57,18 +59,18 @@ jobs:
         uses: actions/checkout@v2
       - name: hello
         run: echo "will run tf apply here"
-      # - name: setup pipeline runner and environment
-      #   uses: ./.github/actions/setup-pipeline-env
-      #   with:
-      #     terraform-env: gha-sandbox
-      #     secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-      # - name: terraform plan for gha-sandbox environment
-      #   uses: ThoughtWorks-DPS/terraform-action@main
-      #   env:
-      #     TF_WORKSPACE: gha-sandbox
-      #   with:
-      #     terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-      #     plan: true
+      - name: setup pipeline runner and environment
+        uses: ./.github/actions/setup-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: terraform apply for gha-sandbox environment
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-sandbox
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          apply: true
 
   gha-sandbox-test-eks-changes:
     name: gha-sandbox test changes
@@ -77,17 +79,12 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: hello
-        run: echo "will run spec tests action here"
-      # - name: setup pipeline runner and environment
-      #   uses: ./.github/actions/setup-pipeline-env
-      #   with:
-      #     terraform-env: gha-sandbox
-      #     secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-      # - name: terraform plan for gha-sandbox environment
-      #   uses: ThoughtWorks-DPS/terraform-action@main
-      #   env:
-      #     TF_WORKSPACE: gha-sandbox
-      #   with:
-      #     terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-      #     plan: true
+      - name: setup pipeline runner and environment
+        uses: ./.github/actions/setup-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: validate eks cluster
+        uses: ./.github/actions/test-eks
+        with:
+          tfvar-env: gha-sandbox
