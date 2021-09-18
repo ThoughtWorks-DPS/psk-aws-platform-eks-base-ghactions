@@ -1,6 +1,6 @@
 locals {
-  cloud_watch_agents_account_namespace     = "amazon-cloudwatch"
-  cloud_watch_agents_service_account_name  = "${var.cluster_name}-cloudwatch-agent"
+  cloud_watch_agents_account_namespace    = "amazon-cloudwatch"
+  cloud_watch_agents_service_account_name = "${var.cluster_name}-cloudwatch-agent"
 }
 
 #cloudwatch-agents

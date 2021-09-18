@@ -11,12 +11,12 @@ module "eks" {
 
   enable_irsa                                  = true
   kubeconfig_aws_authenticator_command         = "aws"
-  kubeconfig_aws_authenticator_command_args    = ["eks","get-token","--cluster-name",var.cluster_name]
+  kubeconfig_aws_authenticator_command_args    = ["eks", "get-token", "--cluster-name", var.cluster_name]
   kubeconfig_aws_authenticator_additional_args = ["--role", local.authentication_role]
 
   cluster_enabled_log_types     = var.cluster_enabled_log_types
   cluster_log_retention_in_days = 90
-  cluster_encryption_config     = [
+  cluster_encryption_config = [
     {
       provider_key_arn = aws_kms_key.cluster_encyption_key.arn
       resources        = ["secrets"]
@@ -39,7 +39,7 @@ module "eks" {
       disk_size        = var.node_group_a_disk_size
       instance_types   = var.node_group_a_instance_types
       # set key_name to empty string to disable remote access to workers
-      key_name         = ""
+      key_name = ""
       k8s_labels = {
         env = var.cluster_name
       }
