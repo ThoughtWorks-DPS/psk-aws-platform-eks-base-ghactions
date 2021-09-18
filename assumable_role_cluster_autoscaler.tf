@@ -26,7 +26,6 @@ resource "aws_iam_policy" "cluster_autoscaler_role_policy" {
 
 data "aws_iam_policy_document" "cluster_autoscaler_role_policy_document" {
   statement {
-    sid    = "${var.cluster_name}ClusterAutoscalerAll"
     effect = "Allow"
 
     actions = [
@@ -41,7 +40,6 @@ data "aws_iam_policy_document" "cluster_autoscaler_role_policy_document" {
   }
 
   statement {
-    sid    = "${var.cluster_name}ClusterAutoscalerOwn"
     effect = "Allow"
 
     actions = [

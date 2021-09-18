@@ -24,7 +24,6 @@ resource "aws_iam_policy" "cloud_watch" {
 
 data "aws_iam_policy_document" "cloud_watch" {
   statement {
-    sid    = "${var.cluster_name}CloudWatchSources"
     effect = "Allow"
 
     actions = [
@@ -42,7 +41,6 @@ data "aws_iam_policy_document" "cloud_watch" {
   }
 
   statement {
-    sid    = "${var.cluster_name}CloudWatchSSM"
     effect = "Allow"
 
     actions = [
