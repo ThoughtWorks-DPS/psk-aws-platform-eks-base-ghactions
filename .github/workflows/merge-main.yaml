@@ -9,26 +9,26 @@ on:
 
 jobs:
 
-  validate-terraform:
-    name: validate terraform
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v2
-      - name: configure shared pipeline job environment
-        uses: ./.github/actions/shared-pipeline-env
-        with:
-          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-          tfvar-env: gha-sandbox
-      - name: run tflint, terraform validate, and terraform fmt checks
-        uses: ThoughtWorks-DPS/terraform-action@main
-        env:
-          TF_WORKSPACE: gha-sandbox
-        with:
-          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-          lint: true
-          fmt-check-terraform: true
-          validate-terraform: true
+  # validate-terraform:
+  #   name: validate terraform
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout code
+  #       uses: actions/checkout@v2
+  #     - name: configure shared pipeline job environment
+  #       uses: ./.github/actions/shared-pipeline-env
+  #       with:
+  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+  #         tfvar-env: gha-sandbox
+  #     - name: run tflint, terraform validate, and terraform fmt checks
+  #       uses: ThoughtWorks-DPS/terraform-action@main
+  #       env:
+  #         TF_WORKSPACE: gha-sandbox
+  #       with:
+  #         terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+  #         lint: true
+  #         fmt-check-terraform: true
+  #         validate-terraform: true
 
   gha-sandbox-change-plan:
     name: gha-sandbox plan changes
