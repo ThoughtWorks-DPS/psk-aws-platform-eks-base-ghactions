@@ -1,7 +1,7 @@
 require 'awspec'
 require 'json'
 
-tfvars = JSON.parse(File.read('./' + ENV['TEST_ENV'] + '.auto.tfvars.json'))
+tfvars = JSON.parse(File.read('./' + ENV['TF_WORKSPACE'] + '.auto.tfvars.json'))
 
 describe eks(tfvars["cluster_name"]) do
   it { should exist }
