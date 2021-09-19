@@ -39,6 +39,6 @@ runs:
         working-directory: ${{ inputs.working-directory }}
         shell: bash
         run: |
-          export AWS_ACCOUNT_ID=$(cat $CLUSTER.auto.tfvars.json | jq -r .account_id)
-          export AWS_DEFAULT_REGION=$(cat $CLUSTER.auto.tfvars.json | jq -r .aws_region)
-          export AWS_ASSUME_ROLE=$(cat $CLUSTER.auto.tfvars.json | jq -r .assume_role)
+          export AWS_ACCOUNT_ID=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .account_id)
+          export AWS_DEFAULT_REGION=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .aws_region)
+          export AWS_ASSUME_ROLE=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .assume_role)
