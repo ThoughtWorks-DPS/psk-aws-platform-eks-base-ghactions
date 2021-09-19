@@ -25,5 +25,3 @@ Manual configurations currently required by example:
 * _gha-sandbox_ and _gha-preview_ environments created
   * configured to require review
   * configured for _main_ branch only
-
-
