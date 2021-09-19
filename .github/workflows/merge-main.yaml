@@ -1,4 +1,4 @@
-name: changes merged on main
+name: changes merged to main
 
 on:
   push:
