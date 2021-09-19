@@ -53,7 +53,7 @@ jobs:
   # and requires team member approval to perform this job
   gha-sandbox-apply-changes:
     name: gha-sandbox apply changes
-    needs: [ validate-terraform, gha-sandbox-change-plan ]
+    needs: [ gha-sandbox-change-plan ]
     runs-on: ubuntu-latest
     environment:
       name: gha-sandbox
