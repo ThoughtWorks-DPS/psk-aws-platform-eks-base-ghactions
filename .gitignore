@@ -1,1 +1,3 @@
 .terraform*
+.ruby-version
+*.auto.tfvars.json
