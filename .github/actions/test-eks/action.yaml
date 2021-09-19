@@ -19,5 +19,5 @@ runs:
       shell: bash
       env:
         TEST_ENV: ${{ inputs. tfvars-env }}
-      run: bash scripts/cluster_configuration_tests.sh ${{ inputs. tfvars-env }}
+      run: bash scripts/cluster_configuration_tests.sh ${{ inputs.tfvars-env }}
 

@@ -1,0 +1,44 @@
+name: deploy core eks cluster-level services
+inputs:
+  working-directory:
+    description: set working directory; default is .
+    required: false
+    default: '.'
+  secrethub-creds:
+    description: secrethub credential passthrough
+    required: true
+  tfvar-env:
+    description: tfvars workspace parameters to use
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: setup runner
+      uses: ThoughtWorks-DPS/lab-runner-setup-action@main
+      with:
+        install-kubectl: "true"
+        install-helm: "true"
+    - name: set kubeconfig
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      env:
+        SECRETHUB_CREDENTIAL: ${{ inputs.secrethub-creds }}
+      run: |
+        mkdir -p ~/.kube
+        SECRETHUB_VAR_ENV=${{ inputs.tfvar-env }} secrethub inject -i tpl/kubeconfig.tpl -o ~/.kube/config
+    - name: deploy standard, non-istio administrative namespaces
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: kubectl apply -f standard-namespaces.yaml
+    - name: deploy metrics apis
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: kubectl apply -f metrics-apis --recursive
+    - name: deploy cluster-autoscaler
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: bash scripts/deploy_cluster_autoscaler.sh ${{ inputs.tfvar-env }}
+    - name: deploy containter-insights
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: bash scripts/deploy_cloud_watch.sh ${{ inputs.tfvar-env }}
