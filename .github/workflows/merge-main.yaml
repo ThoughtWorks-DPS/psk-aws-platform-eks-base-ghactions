@@ -73,6 +73,9 @@ jobs:
         uses: ThoughtWorks-DPS/terraform-action@main
         env:
           TF_WORKSPACE: gha-sandbox
+          # AWS_ACCOUNT_ID: $(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .account_id)
+          # AWS_DEFAULT_REGION: $(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .aws_region)
+          # AWS_ASSUME_ROLE: $(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .assume_role)
         with:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
           awspec-test: true
