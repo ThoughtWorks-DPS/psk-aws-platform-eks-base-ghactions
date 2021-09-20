@@ -79,6 +79,8 @@ jobs:
           test-assume-role: true
           apply: true
       - name: update cluster manager credentials
+        env:
+          SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
         run: bash scripts/write_cluster_credentials.sh gha-sandbox
 
   deploy-core-services:
