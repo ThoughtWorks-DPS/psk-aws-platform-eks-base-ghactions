@@ -30,30 +30,30 @@ jobs:
           fmt-check-terraform: true
           validate-terraform: true
 
-  # gha-sandbox-change-plan:
-  #   name: review change plan for gha-sandbox
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v2
-  #     - name: configure shared pipeline job environment
-  #       uses: ./.github/actions/shared-pipeline-env
-  #       with:
-  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #         tfvar-env: gha-sandbox
-  #     - name: terraform plan for gha-sandbox environment
-  #       uses: ThoughtWorks-DPS/terraform-action@main
-  #       env:
-  #         TF_WORKSPACE: gha-sandbox
-  #       with:
-  #         terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-  #         plan: true
+  gha-sandbox-change-plan:
+    name: review change plan for gha-sandbox
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: terraform plan for gha-sandbox environment
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-sandbox
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          plan: true
 
   # github repository configuration has gha-sandbox environment defined
   # and requires team member approval to perform this job
   gha-sandbox-apply-changes:
     name: deploy gha-sandbox changes
-    needs: [ validate-terraform ]
+    needs: [ validate-terraform, gha-sandbox-change-plan ]
     runs-on: ubuntu-latest
     environment:
       name: gha-sandbox
