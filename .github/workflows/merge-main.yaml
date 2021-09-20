@@ -60,6 +60,10 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
+      - name: test masks
+        run: |
+          echo "::add-mask::$AWS_ACCOUNT_ID"
+          echo "::add-mask::$AWS_ASSUME_ROLE"
       - name: configure shared pipeline job environment
         uses: ./.github/actions/shared-pipeline-env
         with:
@@ -73,22 +77,8 @@ jobs:
         uses: ThoughtWorks-DPS/terraform-action@main
         env:
           TF_WORKSPACE: gha-sandbox
-          # AWS_ACCOUNT_ID: $(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .account_id)
-          # AWS_DEFAULT_REGION: $(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .aws_region)
-          # AWS_ASSUME_ROLE: $(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .assume_role)
         with:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
           awspec-test: true
           test-assume-role: true
           apply: true
-      # - name: test
-      #   run: |
-      #     echo ${AWS_ACCOUNT_ID:0:5}
-      #     echo ${AWS_ASSUME_ROLE:0:5}
-      #     aws sts assume-role --output json --role-arn arn:aws:iam::$AWS_ACCOUNT_ID:role/$AWS_ASSUME_ROLE --role-session-name eks-configuration-test > credentials
-      #     export AWS_ACCESS_KEY_ID=$(cat credentials | jq -r ".Credentials.AccessKeyId")
-      #     export AWS_SECRET_ACCESS_KEY=$(cat credentials | jq -r ".Credentials.SecretAccessKey")
-      #     export AWS_SESSION_TOKEN=$(cat credentials | jq -r ".Credentials.SessionToken")
-      #     echo ${AWS_ACCESS_KEY_ID:0:5}
-      #     echo ${AWS_SESSION_TOKEN:0:5}
-      #     rspec 
