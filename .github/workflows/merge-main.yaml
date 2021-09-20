@@ -60,10 +60,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: test masks
-        run: |
-          echo "::add-mask::$AWS_ACCOUNT_ID"
-          echo "::add-mask::$AWS_ASSUME_ROLE"
       - name: configure shared pipeline job environment
         uses: ./.github/actions/shared-pipeline-env
         with:

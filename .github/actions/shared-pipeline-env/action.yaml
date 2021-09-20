@@ -42,4 +42,5 @@ runs:
         echo "AWS_ACCOUNT_ID=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .account_id)" >> $GITHUB_ENV
         echo "AWS_DEFAULT_REGION=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .aws_region)" >> $GITHUB_ENV
         echo "AWS_ASSUME_ROLE=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .assume_role)" >> $GITHUB_ENV
-        
+        echo "::add-mask::$AWS_ACCOUNT_ID"
+        echo "::add-mask::$AWS_ASSUME_ROLE"
