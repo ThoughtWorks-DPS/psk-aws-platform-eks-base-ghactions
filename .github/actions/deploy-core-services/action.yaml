@@ -42,3 +42,7 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: bash scripts/deploy_cloud_watch.sh ${{ inputs.tfvar-env }}
+    - name: validate core services
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: bash scripts/core_services_health_check.sh ${{ inputs.tfvar-env }}

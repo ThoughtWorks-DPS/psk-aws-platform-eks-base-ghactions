@@ -79,20 +79,20 @@ jobs:
           test-assume-role: true
           apply: true
 
-  # deploy-core-services:
-  #   name: deploy core services
-  #   needs: gha-sandbox-apply-changes
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v2
-  #     - name: configure shared pipeline job environment
-  #       uses: ./.github/actions/shared-pipeline-env
-  #       with:
-  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #         tfvar-env: gha-sandbox
-  #     - name: deploy and test core cluster services
-  #       uses: ./.github/actions/deploy-core-services
-  #       with:
-  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #         tfvar-env: gha-sandbox
+  deploy-core-services:
+    name: deploy core services
+    needs: gha-sandbox-apply-changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: deploy and test core cluster services
+        uses: ./.github/actions/deploy-core-services
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
