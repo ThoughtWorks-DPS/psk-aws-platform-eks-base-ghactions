@@ -78,6 +78,8 @@ jobs:
           awspec-test: true
           test-assume-role: true
           apply: true
+      - name: update cluster manager credentials
+        run: bash scripts/write_cluster_credentials.sh gha-sandbox
 
   deploy-core-services:
     name: deploy core services
