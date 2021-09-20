@@ -19,6 +19,13 @@ runs:
         uses: ThoughtWorks-DPS/lab-runner-setup-action@main
         with:
           install-secrethub: "true"
+      # set environment tfvars file
+      - name: set environment tfvars
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        env:
+          SECRETHUB_CREDENTIAL: ${{ inputs.secrethub-creds }}
+        run: secrethub inject -i environments/${{ inputs.tfvar-env}}.auto.tfvars.json.tpl -o ${{ inputs.tfvar-env}}.auto.tfvars.json
       # set secure shared pipeline ENV vars
       - name: fetch secure env values
         uses: secrethub/actions/env-export@v0.2.1
@@ -35,11 +42,3 @@ runs:
           echo "AWS_ACCOUNT_ID=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .account_id)" >> $GITHUB_ENV
           echo "AWS_DEFAULT_REGION=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .aws_region)" >> $GITHUB_ENV
           echo "AWS_ASSUME_ROLE=$(cat ${{ inputs.tfvar-env}}.auto.tfvars.json | jq -r .assume_role)" >> $GITHUB_ENV
-      # set environment tfvars file
-      - name: set environment tfvars
-        working-directory: ${{ inputs.working-directory }}
-        shell: bash
-        env:
-          SECRETHUB_CREDENTIAL: ${{ inputs.secrethub-creds }}
-        run: secrethub inject -i environments/${{ inputs.tfvar-env}}.auto.tfvars.json.tpl -o ${{ inputs.tfvar-env}}.auto.tfvars.json
-
