@@ -1,0 +1,43 @@
+on: workflow_dispatch
+
+tear-down-gha-sandbox:
+  name: delete gha-sandbox
+  runs-on: ubuntu-latest
+  environment:
+    name: gha-sandbox
+  steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+    - name: configure shared pipeline job environment
+      uses: ./.github/actions/shared-pipeline-env
+      with:
+        secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+        tfvar-env: gha-sandbox
+    - name: delete gha-sandbox eks cluster
+      uses: ThoughtWorks-DPS/terraform-action@main
+      env:
+        TF_WORKSPACE: gha-sandbox
+      with:
+        terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+        delete: true
+
+tear-down-gha-preview:
+  name: delete gha-preview
+  runs-on: ubuntu-latest
+  environment:
+    name: gha-preview
+  steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+    - name: configure shared pipeline job environment
+      uses: ./.github/actions/shared-pipeline-env
+      with:
+        secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+        tfvar-env: gha-preview
+    - name: delete gha-preview eks cluster
+      uses: ThoughtWorks-DPS/terraform-action@main
+      env:
+        TF_WORKSPACE: gha-preview
+      with:
+        terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+        delete: true
