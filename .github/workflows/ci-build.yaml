@@ -9,83 +9,83 @@ on:
 
 jobs:
 
-  # validate-terraform:
-  #   name: validate terraform
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v2
-  #     - name: configure shared pipeline job environment
-  #       uses: ./.github/actions/shared-pipeline-env
-  #       with:
-  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #         tfvar-env: gha-sandbox
-  #     - name: run tflint, terraform validate, and terraform fmt checks
-  #       uses: ThoughtWorks-DPS/terraform-action@main
-  #       env:
-  #         TF_WORKSPACE: gha-sandbox
-  #       with:
-  #         terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-  #         lint: true
-  #         fmt-check-terraform: true
-  #         validate-terraform: true
+  validate-terraform:
+    name: validate terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: run tflint, terraform validate, and terraform fmt checks
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-sandbox
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          lint: true
+          fmt-check-terraform: true
+          validate-terraform: true
 
-  # gha-sandbox-change-plan:
-  #   name: review change plan for gha-sandbox
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v2
-  #     - name: configure shared pipeline job environment
-  #       uses: ./.github/actions/shared-pipeline-env
-  #       with:
-  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #         tfvar-env: gha-sandbox
-  #     - name: terraform plan for gha-sandbox environment
-  #       uses: ThoughtWorks-DPS/terraform-action@main
-  #       env:
-  #         TF_WORKSPACE: gha-sandbox
-  #       with:
-  #         terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-  #         plan: true
+  gha-sandbox-change-plan:
+    name: review change plan for gha-sandbox
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: terraform plan for gha-sandbox environment
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-sandbox
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          plan: true
 
   # github repository configuration has gha-sandbox environment defined
   # and requires team member approval to perform this job
-  # gha-sandbox-apply-changes:
-  #   name: deploy gha-sandbox changes
-  #   needs: [ validate-terraform, gha-sandbox-change-plan ]
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: gha-sandbox
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v2
-  #     - name: configure shared pipeline job environment
-  #       uses: ./.github/actions/shared-pipeline-env
-  #       with:
-  #         secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #         tfvar-env: gha-sandbox
-  #     - name: setup runner
-  #       uses: ThoughtWorks-DPS/lab-runner-setup-action@main
-  #       with:
-  #         install-awspec: true
-  #     - name: apply and test changes to gha-sandbox eks cluster
-  #       uses: ThoughtWorks-DPS/terraform-action@main
-  #       env:
-  #         TF_WORKSPACE: gha-sandbox
-  #       with:
-  #         terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-  #         awspec-test: true
-  #         test-assume-role: true
-  #         apply: true
-  #     - name: update cluster manager credentials
-  #       env:
-  #         SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
-  #       run: bash scripts/write_cluster_credentials.sh gha-sandbox
+  gha-sandbox-apply-changes:
+    name: deploy gha-sandbox changes
+    needs: [ validate-terraform, gha-sandbox-change-plan ]
+    runs-on: ubuntu-latest
+    environment:
+      name: gha-sandbox
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-sandbox
+      - name: setup runner
+        uses: ThoughtWorks-DPS/lab-runner-setup-action@main
+        with:
+          install-awspec: true
+      - name: apply and test changes to gha-sandbox eks cluster
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-sandbox
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          awspec-test: true
+          test-assume-role: true
+          apply: true
+      - name: update cluster manager credentials
+        env:
+          SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
+        run: bash scripts/write_cluster_credentials.sh gha-sandbox
 
   deploy-core-services:
     name: deploy core services
-    #needs: gha-sandbox-apply-changes
+    needs: gha-sandbox-apply-changes
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
