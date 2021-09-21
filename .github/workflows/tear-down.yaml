@@ -23,7 +23,7 @@ jobs:
           TF_WORKSPACE: gha-sandbox
         with:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-          delete: true
+          destroy: true
 
   tear-down-gha-preview:
     name: delete gha-preview
@@ -44,4 +44,4 @@ jobs:
           TF_WORKSPACE: gha-preview
         with:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-          delete: true
+          destroy: true
