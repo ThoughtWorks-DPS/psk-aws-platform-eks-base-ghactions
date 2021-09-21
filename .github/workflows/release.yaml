@@ -29,7 +29,7 @@ jobs:
   # and requires team member approval to perform this job
   gha-preview-apply-changes:
     name: deploy gha-preview changes
-    needs: [ validate-terraform, gha-preview-change-plan ]
+    needs: gha-preview-change-plan
     runs-on: ubuntu-latest
     environment:
       name: gha-preview
