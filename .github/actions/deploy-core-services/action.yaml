@@ -19,6 +19,10 @@ runs:
         install-kubectl: "true"
         install-helm: "true"
         install-bats: "true"
+    - name: Setup BATS
+      uses: mig4/setup-bats@v1
+      with:
+        bats-version: 1.4.1
     - name: set kubeconfig
       working-directory: ${{ inputs.working-directory }}
       shell: bash
