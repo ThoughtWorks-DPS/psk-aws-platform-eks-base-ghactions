@@ -1,3 +1,5 @@
+name: Delete all gha demo resources
+
 on: workflow_dispatch
 
 jobs:
