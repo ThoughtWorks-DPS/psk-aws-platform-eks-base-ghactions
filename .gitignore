@@ -1,3 +1,4 @@
 .terraform*
 .ruby-version
 *.auto.tfvars.json
+gha-sandbox-kubeconfig
