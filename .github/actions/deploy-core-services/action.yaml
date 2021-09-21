@@ -18,6 +18,7 @@ runs:
       with:
         install-kubectl: "true"
         install-helm: "true"
+        install-bats: "true"
     - name: set kubeconfig
       working-directory: ${{ inputs.working-directory }}
       shell: bash
