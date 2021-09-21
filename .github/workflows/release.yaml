@@ -6,25 +6,73 @@ on:
       - "*"
 
 jobs:
-  gha-sandbox-plan:
+  gha-preview-change-plan:
+    name: review change plan for gha-preview
     runs-on: ubuntu-latest
-    name: terraform plan gha-sandbox
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: setup pipeline runner and environment
-        uses: ./.github/actions/setup-pipeline-env
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
         with:
-          terraform-env: gha-sandbox
           secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
-      - name: terraform plan for gha-sandbox environment
+          tfvar-env: gha-preview
+      - name: terraform plan for gha-preview environment
         uses: ThoughtWorks-DPS/terraform-action@main
         env:
-          TF_WORKSPACE: gha-sandbox
+          TF_WORKSPACE: gha-preview
         with:
           terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
-          lint: true
-          init: true
-          fmt-check-terraform: true
-          validate-terraform: true
           plan: true
+
+  # github repository configuration has gha-preview environment defined
+  # and requires team member approval to perform this job
+  gha-preview-apply-changes:
+    name: deploy gha-preview changes
+    needs: [ validate-terraform, gha-preview-change-plan ]
+    runs-on: ubuntu-latest
+    environment:
+      name: gha-preview
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-preview
+      - name: setup runner
+        uses: ThoughtWorks-DPS/lab-runner-setup-action@main
+        with:
+          install-awspec: true
+      - name: apply and test changes to gha-preview eks cluster
+        uses: ThoughtWorks-DPS/terraform-action@main
+        env:
+          TF_WORKSPACE: gha-preview
+        with:
+          terraform-cloud-token: $TERRAFORM_CLOUD_TOKEN
+          awspec-test: true
+          test-assume-role: true
+          apply: true
+      - name: update cluster manager credentials
+        env:
+          SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
+        run: bash scripts/write_cluster_credentials.sh gha-preview
+
+  deploy-core-services:
+    name: deploy core services
+    needs: gha-preview-apply-changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: configure shared pipeline job environment
+        uses: ./.github/actions/shared-pipeline-env
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-preview
+      - name: deploy and test core cluster services
+        uses: ./.github/actions/deploy-core-services
+        with:
+          secrethub-creds: ${{ secrets.SECRETHUB_CREDENTIAL }}
+          tfvar-env: gha-preview
