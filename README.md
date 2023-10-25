@@ -9,7 +9,6 @@
 <br />
 
 ### Example of lab-plaform-eks pipeline using GitHub Actions
-
 _See lab-platform-eks README for cluster configuration details_  
 
 Dependencies and assumptions:  
