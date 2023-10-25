@@ -14,13 +14,15 @@ jobs:
     uses: ThoughtWorks-DPS/terraform-action/.github/workflows/terraform-static-code-analysis.yaml@main
     with:
       terraform-version: 1.6.2
+      before-static-analysis: |
+        pwd
+        ls -la
 
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
   #   name: static code analysis
   #   runs-on: ubuntu-latest
-
 
   #   steps:
   #     - name: checkout code
