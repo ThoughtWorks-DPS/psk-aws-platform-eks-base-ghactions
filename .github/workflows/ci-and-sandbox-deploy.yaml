@@ -10,8 +10,9 @@ on:
 jobs:
 
   static-code-analysis:
-    name: validate terraform
+    name: static code analysis
     runs-on: ubuntu-latest
+    
     steps:
       - name: checkout code
         uses: actions/checkout@v4.1.1
