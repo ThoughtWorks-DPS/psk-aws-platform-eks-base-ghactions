@@ -12,8 +12,10 @@ jobs:
   caller-static-code-analysis:
     name: caller-static-code-analysis
     uses: ThoughtWorks-DPS/terraform-action/.github/workflows/static-code-analysis.yaml@main
-    # with:
-    #   config-path: .github/labeler.yml
+    with:
+      testcommand: |
+        ls -la
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
