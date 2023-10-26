@@ -13,6 +13,7 @@ jobs:
     name: analysis
     uses: ThoughtWorks-DPS/terraform-action/.github/workflows/terraform-static-code-analysis.yaml@main
     with:
+      cosign-version: 2.2.0
       terraform-version: 1.6.2
       tflint-version: 0.48.0
       tflint-provider: aws
