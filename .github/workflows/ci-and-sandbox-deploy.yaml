@@ -16,6 +16,7 @@ jobs:
       terraform-version: 1.6.2
 
 
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
