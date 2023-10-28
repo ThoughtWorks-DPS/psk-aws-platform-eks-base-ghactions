@@ -18,7 +18,6 @@ jobs:
       tflint-version: 0.48.0
       tflint-provider: aws
 
-
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
