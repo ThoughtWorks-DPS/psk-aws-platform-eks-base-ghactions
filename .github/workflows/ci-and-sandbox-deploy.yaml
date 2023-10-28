@@ -20,7 +20,6 @@ jobs:
       tflint-provider-version: "0.27.0"
 
 
-
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
