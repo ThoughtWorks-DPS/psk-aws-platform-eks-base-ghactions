@@ -17,11 +17,11 @@ jobs:
       terraform-version: 1.6.2
       tflint-version: 0.48.0
       tflint-plugins: |
-        plugin \"aws\" {
+        plugin \"aws\" \{
           enabled = true
           version = \"0.27.0\"
           source = \"github.com/terraform-linters/tflint-ruleset-aws\"
-        }
+        \}
 
 
     # secrets:
