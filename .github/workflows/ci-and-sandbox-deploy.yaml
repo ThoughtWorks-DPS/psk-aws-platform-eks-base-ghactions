@@ -22,6 +22,7 @@ jobs:
       checkov-version: 2.5.13
 
 
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
