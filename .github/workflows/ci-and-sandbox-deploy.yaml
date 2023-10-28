@@ -18,6 +18,7 @@ jobs:
       tflint-version: 0.48.0
       tflint-provider: aws
       tflint-provider-version: "0.27.0"
+      checkov-version: 2.5.13
 
 
     # secrets:
