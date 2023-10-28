@@ -21,7 +21,6 @@ jobs:
       tfsec-version: 1.28.4
       checkov-version: 2.5.13
 
-
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
