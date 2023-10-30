@@ -23,7 +23,6 @@ jobs:
 
 
 
-
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
