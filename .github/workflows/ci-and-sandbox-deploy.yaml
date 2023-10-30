@@ -23,7 +23,6 @@ jobs:
       terrascan-version: 1.18.3
 
 
-
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
