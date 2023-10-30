@@ -19,11 +19,7 @@ jobs:
       tflint-provider: aws
       tflint-provider-version: "0.27.0"
       tfsec-version: 1.28.4
-      # checkov-version: 2.5.13 not working
-      snyk-version: 1.1237.0
-      snyk-organization: twdps
-      snyk-token: $SNYK_TOKEN
-
+      checkov-version: 3.0.14
 
 
 
