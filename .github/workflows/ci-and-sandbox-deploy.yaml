@@ -25,6 +25,8 @@ jobs:
       snyk-token: $SNYK_TOKEN
 
 
+
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
