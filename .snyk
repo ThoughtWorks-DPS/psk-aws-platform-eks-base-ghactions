@@ -1,0 +1,13 @@
+ignore:
+  SNYK-CC-TF-11:
+    - '*':
+        reason: Your password does not enforce a minimum length; reference to tf module not managing passwords
+        expires: '2030-01-01T14:26:34.404Z'
+  SNYK-CC-TF-12:
+    - '*':
+        reason: Your password does not enforce a minimum length; reference to tf module not managing passwords
+        expires: '2030-01-01T14:26:34.404Z'
+  SNYK-CC-TF-107:
+    - '*':
+        reason: Cluster secrets not encrypted. False positive, a key is created and encryption confing set, see main.th
+        expires: '2030-01-01T14:26:34.404Z'
