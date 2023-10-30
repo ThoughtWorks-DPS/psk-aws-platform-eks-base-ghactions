@@ -23,6 +23,8 @@ jobs:
       snyk-version: 1.1236.0
 
 
+
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
