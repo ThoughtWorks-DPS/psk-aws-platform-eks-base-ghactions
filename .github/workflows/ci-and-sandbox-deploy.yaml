@@ -18,8 +18,8 @@ jobs:
       tflint-version: 0.48.0
       tflint-provider: aws
       tflint-provider-version: "0.27.0"
-      checkov-version: 3.0.14
-      # tfsec-version: 1.28.4
+      # checkov-version: 3.0.14
+      tfsec-version: 1.28.4
       # terrascan-version: 1.18.3
 
 
