@@ -21,7 +21,8 @@ jobs:
       # checkov-version: 3.0.14
       # tfsec-version: 1.28.4
       terrascan-version: 1.18.3
-
+      terrascan-iac-type: terraform
+      terrascan-policy-type: all
 
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
