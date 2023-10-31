@@ -27,7 +27,6 @@ jobs:
       infracost-version: 0.10.29
 
 
-
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
