@@ -20,9 +20,10 @@ jobs:
       tflint-provider-version: "0.27.0"
       # checkov-version: 3.0.14
       # tfsec-version: 1.28.4
-      terrascan-version: 1.18.3
-      terrascan-iac-type: terraform
-      terrascan-policy-type: all
+      # terrascan-version: 1.18.3
+      # terrascan-iac-type: terraform
+      # terrascan-policy-type: all
+      driftctl-version: 0.39.0
 
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
