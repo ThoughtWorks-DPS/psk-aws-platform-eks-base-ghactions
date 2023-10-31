@@ -25,6 +25,8 @@ jobs:
       # terrascan-policy-type: all
       driftctl-version: 0.39.0
 
+
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
