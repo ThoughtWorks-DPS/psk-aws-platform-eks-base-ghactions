@@ -18,13 +18,7 @@ jobs:
       tflint-version: 0.48.0
       tflint-provider: aws
       tflint-provider-version: "0.27.0"
-      # checkov-version: 3.0.14
-      # tfsec-version: 1.28.4
-      # terrascan-version: 1.18.3
-      # terrascan-iac-type: terraform
-      # terrascan-policy-type: all
-      # driftctl-version: 0.39.0
-      infracost-version: 0.10.29
+      trivy-version: 0.46.0
 
 
     # secrets:
