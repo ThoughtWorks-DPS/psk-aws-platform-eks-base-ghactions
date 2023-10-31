@@ -23,7 +23,8 @@ jobs:
       # terrascan-version: 1.18.3
       # terrascan-iac-type: terraform
       # terrascan-policy-type: all
-      driftctl-version: 0.39.0
+      # driftctl-version: 0.39.0
+      infracost-version: 0.10.29
 
 
 
