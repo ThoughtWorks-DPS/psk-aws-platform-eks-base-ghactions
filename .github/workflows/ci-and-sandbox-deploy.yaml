@@ -21,6 +21,7 @@ jobs:
       trivy-version: 0.46.0
 
 
+
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
   # static-code-analysis:
