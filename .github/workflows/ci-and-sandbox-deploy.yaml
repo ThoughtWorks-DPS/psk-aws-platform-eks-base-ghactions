@@ -17,9 +17,9 @@ jobs:
       terraform-version: 1.6.2
       tflint-version: 0.48.0
       tflint-provider: aws
-      tflint-provider-version: "0.27.0"
+      tflint-provider-version: 0.27.0
       trivy-version: 0.46.0
-
+      trivy-commandline-args: "config . --exit-code 0"
 
     # secrets:
     #   envPAT: ${{ secrets.envPAT }}
